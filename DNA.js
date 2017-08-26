@@ -13,9 +13,11 @@ function DNA(target) {
       }
     }
 
-    this.fitness = score / this.target.length;
+    this.fitness = 1 +  score * pow(score, 4);
 
-    this.fitness = pow(this.fitness, 4) + 0.01;
+    // this.fitness = score / this.target.length;
+
+    // this.fitness = pow(this.fitness, 2) + 0.05;
 
     return this.fitness;
   }

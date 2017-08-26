@@ -20,6 +20,7 @@ function draw() {
   population.generate();
 
   if(population.finish) {
+    console.log('done');
     noLoop();
   }
 }

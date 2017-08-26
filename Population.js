@@ -28,7 +28,7 @@ function Population(target, mutateRate, maxE) {
     this.bestPhase = this.population[maxIndex].getPhase();
     this.maxFitness = this.population[maxIndex].fitness;
 
-    if(this.maxFitness >= 1) {
+    if(this.maxFitness >= (1 +  this.target.length * pow(this.target.length, 4))) {
       this.finish = true;
     }
   }
@@ -82,8 +82,8 @@ function Population(target, mutateRate, maxE) {
   }
 
   this.evaluate = function() {
-    document.querySelector('#maxFitness').textContent = this.maxFitness;
-    document.querySelector('#avgFitness').textContent = this.avgFitness;
+    document.querySelector('#maxFitness').textContent = this.maxFitness / (1 + this.target.length * pow(this.target.length, 4));
+    document.querySelector('#avgFitness').textContent = this.avgFitness / (1 + this.target.length * pow(this.target.length, 4));
     document.querySelector('#bestPhase').textContent = this.bestPhase;
     document.querySelector('#numGeneration').textContent = this.generation;
     document.querySelector('#numPopulation').textContent = this.maxE;
@@ -92,7 +92,7 @@ function Population(target, mutateRate, maxE) {
     var html = '';
     for(var i = 0; i < this.maxE; i++) {
       var dna = this.population[i];
-      html += "<p>" + dna.phase + "   -   <span>" + dna.fitness + "</span></p>";
+      html += "<p>" + dna.phase + "   -   <span>" + (dna.fitness /  (1 + this.target.length * pow(this.target.length, 4))) + "</span></p>";
     }
     listPhase.innerHTML = html;
   }
