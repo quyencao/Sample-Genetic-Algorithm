@@ -28,38 +28,57 @@ function Population(target, mutateRate, maxE) {
     this.bestPhase = this.population[maxIndex].getPhase();
     this.maxFitness = this.population[maxIndex].fitness;
 
-    if(this.maxFitness == 1) {
+    if(this.maxFitness >= 1) {
       this.finish = true;
     }
   }
 
   this.caculateFitness();
 
-  this.naturalSelection = function() {
-    this.matingPool = [];
-
-    for(var i = 0; i < this.population.length; i++) {
-      var numE = floor(this.population[i].fitness * 100 / this.maxFitness);
-
-      for(var j = 0; j < numE; j++) {
-        this.matingPool.push(this.population[i]);
-      }
-    }
-  }
+  // this.naturalSelection = function() {
+  //   this.matingPool = [];
+  //
+  //   for(var i = 0; i < this.population.length; i++) {
+  //     var numE = floor(this.population[i].fitness * 100 / this.maxFitness);
+  //
+  //     for(var j = 0; j < numE; j++) {
+  //       this.matingPool.push(this.population[i]);
+  //     }
+  //   }
+  // }
 
   this.generate = function() {
+    var newPopulation = [];
     for(var i = 0; i < this.maxE; i++) {
-      var parent1 = this.matingPool[floor(random(this.matingPool.length))];
-      var parent2 = this.matingPool[floor(random(this.matingPool.length))];
+      var parent1 = this.acceptReject();
+      var parent2 = this.acceptReject();
 
       var child = parent1.crossOver(parent2);
       child.mutate(this.mutateRate);
 
       child.getPhase();
 
-      this.population[i] = child;
+      newPopulation[i] = child;
     }
+    this.population = newPopulation;
     this.generation++;
+  }
+
+  this.acceptReject = function() {
+    var beSafe = 0;
+    while (true){
+        var index = floor(random(this.population.length));
+        var parent = this.population[index];
+        var r = random(this.maxFitness);
+
+        if(r < parent.fitness) {
+            return parent;
+        }
+        beSafe++;
+        if(beSafe > 10000) {
+          return null;
+        }
+    }
   }
 
   this.evaluate = function() {

@@ -15,7 +15,7 @@ function DNA(target) {
 
     this.fitness = score / this.target.length;
 
-    this.fitness = pow(this.fitness, 4);
+    this.fitness = pow(this.fitness, 4) + 0.01;
 
     return this.fitness;
   }
